@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
+    <PackageVersion Include="Si.EntityFramework.Extension" Version="8.0.6" />
+    <PackageVersion Include="Si.EntityFramework.PermGuard" Version="8.0.2" />
+    <PackageVersion Include="Si.CoreHub" Version="1.0.4" />
+    <PackageVersion Include="Lazy.Captcha.Core" Version="2.0.8" />
+    <!-- 显式指定所有 Microsoft.Extensions 包版本 -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="SkiaSharp" Version="3.116.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" 
+                        Condition="'$(OutputType)' == 'Library'" />
+  </ItemGroup>
+</Project>

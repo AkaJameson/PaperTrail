@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{D21AFAE3-8098-4997-B788-E287796BF7F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Api", "PaperTrail.Api\PaperTrail.Api.csproj", "{9774E990-847D-4885-BF7B-E8AE01D02D76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Storage", "PaperTrail.Storage\PaperTrail.Storage.csproj", "{42D05325-3C64-4C10-B17E-DFD6C1904CE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Model.Login", "PaperTrail.Model.Login\PaperTrail.Model.Login.csproj", "{675C6E5B-CB50-4165-B002-B93C24601C9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{0F82B3B3-E1C0-41B1-866B-7C4C8E011C85}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperTrail.Utilities", "PaperTrail.Utilities\PaperTrail.Utilities.csproj", "{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{E8D33C8D-6D3B-4D7C-A74E-CC7AF18F35E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9774E990-847D-4885-BF7B-E8AE01D02D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9774E990-847D-4885-BF7B-E8AE01D02D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9774E990-847D-4885-BF7B-E8AE01D02D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9774E990-847D-4885-BF7B-E8AE01D02D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D05325-3C64-4C10-B17E-DFD6C1904CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D05325-3C64-4C10-B17E-DFD6C1904CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D05325-3C64-4C10-B17E-DFD6C1904CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D05325-3C64-4C10-B17E-DFD6C1904CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675C6E5B-CB50-4165-B002-B93C24601C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675C6E5B-CB50-4165-B002-B93C24601C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675C6E5B-CB50-4165-B002-B93C24601C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675C6E5B-CB50-4165-B002-B93C24601C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{675C6E5B-CB50-4165-B002-B93C24601C9F} = {D21AFAE3-8098-4997-B788-E287796BF7F6}
+		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB} = {E8D33C8D-6D3B-4D7C-A74E-CC7AF18F35E4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0B65556-D1BC-4724-B6B0-F92496CC0175}
+	EndGlobalSection
+EndGlobal
