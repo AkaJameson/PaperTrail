@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using PaperTrail.Api.Filter;
 using PaperTrail.Api.Models;
 using PaperTrail.Storage;
@@ -21,7 +23,7 @@ namespace PaperTrail.Api
             //日志文件路径
             var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "logs");
             //日志文件配置
-            LogSetting.Init(logPath);
+            LogCenter.Init(logPath);
             //启动
             var builder = WebApplication.CreateBuilder(args);
             //Configuration文件配置
@@ -32,7 +34,7 @@ namespace PaperTrail.Api
             //清除默认日志提供者
             builder.Logging.ClearProviders();
             //添加自定义日志提供者（输出框架级别日志）
-            builder.Host.UseLog(logPath);
+            builder.Host.ConfiguraSystemHub(logPath);
             //添加内存事件总线
             builder.Services.AddInMemoryEventBus();
             //使用内存缓存机制
@@ -80,8 +82,13 @@ namespace PaperTrail.Api
             builder.Services.AddCurrentUserAccessor((privider) =>
             {
                 var httpContext = privider.GetService<HttpContextAccessor>();
-                var Id = httpContext?.HttpContext?.Items["Id"]?.ToString();
-                return Id == null ? null : new CurrentUser { UserId = Id };
+                var idStr = httpContext?.HttpContext?.Items["Id"]?.ToString();
+#pragma warning disable CS8603 // 可能返回 null 引用。
+                return idStr == null ? null
+                                     : long.TryParse(idStr,out var id)
+                                     ? new CurrentUser { UserId = id}
+                                     : null;
+#pragma warning restore CS8603 // 可能返回 null 引用。
             });
             //添加IP限流
             builder.Services.AddRateLimiter(options =>
@@ -114,6 +121,7 @@ namespace PaperTrail.Api
                 options.IncludeSubDomains = true;  // 包括子域名
                 options.Preload = true;  // 启用预加载
             });
+            //模块加载
             var packagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "packages");
             Directory.CreateDirectory(packagePath);
             builder.AddPackages(option =>
@@ -121,17 +129,26 @@ namespace PaperTrail.Api
                 option.FilePath = packagePath;
             });
             var app = builder.Build();
+            //设置服务定位器
             ServiceLocator.SetServiceProvider(app.Services);
+            //静态资源文件夹设置
+            Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "uploads"));
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "uploads")),
+                RequestPath = "/uploads"
+            });
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();  // 启用 Swagger 中间件
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                    options.RoutePrefix = string.Empty;
                 });
             }
-
-            // 使用 HSTS 配置（只能在生产环境下使用 HTTPS）
+            // 使用 HSTS 配置
             if (app.Environment.IsProduction())
             {
                 app.UseHsts();  // 启用 HSTS 中间件

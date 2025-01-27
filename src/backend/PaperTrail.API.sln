@@ -16,9 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperTrail.Utilities", "PaperTrail.Utilities\PaperTrail.Utilities.csproj", "{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Utilities", "PaperTrail.Utilities\PaperTrail.Utilities.csproj", "{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{E8D33C8D-6D3B-4D7C-A74E-CC7AF18F35E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Module.Blog", "PaperTrail.Module.Blog\PaperTrail.Module.Blog.csproj", "{826BBA0E-C068-49A6-920C-5A887E32F42B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperTrail.Model.Manager", "PaperTrail.Model.Manager\PaperTrail.Model.Manager.csproj", "{833DADE4-8884-4E28-BC71-C84C3A458BA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +46,14 @@ Global
 		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{826BBA0E-C068-49A6-920C-5A887E32F42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826BBA0E-C068-49A6-920C-5A887E32F42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826BBA0E-C068-49A6-920C-5A887E32F42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826BBA0E-C068-49A6-920C-5A887E32F42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{833DADE4-8884-4E28-BC71-C84C3A458BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{833DADE4-8884-4E28-BC71-C84C3A458BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{833DADE4-8884-4E28-BC71-C84C3A458BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{833DADE4-8884-4E28-BC71-C84C3A458BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +61,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{675C6E5B-CB50-4165-B002-B93C24601C9F} = {D21AFAE3-8098-4997-B788-E287796BF7F6}
 		{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB} = {E8D33C8D-6D3B-4D7C-A74E-CC7AF18F35E4}
+		{826BBA0E-C068-49A6-920C-5A887E32F42B} = {D21AFAE3-8098-4997-B788-E287796BF7F6}
+		{833DADE4-8884-4E28-BC71-C84C3A458BA9} = {D21AFAE3-8098-4997-B788-E287796BF7F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0B65556-D1BC-4724-B6B0-F92496CC0175}

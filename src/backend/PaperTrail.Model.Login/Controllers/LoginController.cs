@@ -5,7 +5,7 @@ using PaperTrail.Model.Login.Services;
 using PaperTrail.Utilities.Captcha;
 using Si.CoreHub.OperateResult;
 
-namespace PaperTrail.Model.Login.Controller
+namespace PaperTrail.Model.Login.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -33,11 +33,11 @@ namespace PaperTrail.Model.Login.Controller
         [HttpPost]
         public async Task<Result> Login([FromBody] LoginRequest request, [FromQuery] string captchaId, [FromQuery] string captchaCode)
         {
-            if(string.IsNullOrEmpty(request.Account)|| string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Account) || string.IsNullOrEmpty(request.Password))
             {
                 return Result.Failed("账号或密码不能为空");
             }
-            if(_captcha.Validate(captchaId, captchaCode))
+            if (_captcha.Validate(captchaId, captchaCode))
             {
                 return await _loginService.Login(request);
             }

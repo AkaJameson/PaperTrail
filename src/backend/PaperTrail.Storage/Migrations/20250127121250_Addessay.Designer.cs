@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaperTrail.Storage;
 
@@ -10,9 +11,11 @@ using PaperTrail.Storage;
 namespace PaperTrail.Storage.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    partial class BlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250127121250_Addessay")]
+    partial class Addessay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +73,6 @@ namespace PaperTrail.Storage.Migrations
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsPublish")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -326,15 +326,6 @@ namespace PaperTrail.Storage.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("AvatarPath")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Github")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -344,9 +335,6 @@ namespace PaperTrail.Storage.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
-
-                    b.Property<string>("QQ")
-                        .HasColumnType("longtext");
 
                     b.HasDiscriminator().HasValue("BlogUser");
                 });

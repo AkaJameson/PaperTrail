@@ -14,18 +14,18 @@ namespace PaperTrail.Model.Login.ServicesImpl
     public class LoginServiceImpl:ILoginService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPackConfiguration<LoginServiceImpl> _packConfiguration;
+        private readonly IConfiguration configuration;
         private readonly JwtManager _jwtManager;
-        public LoginServiceImpl(IUnitOfWork unitOfWork, IPackConfiguration<LoginServiceImpl> packConfiguration = null, JwtManager jwtManager = null)
+        public LoginServiceImpl(IUnitOfWork unitOfWork, IConfiguration packConfiguration = null, JwtManager jwtManager = null)
         {
             _unitOfWork = unitOfWork;
-            _packConfiguration = packConfiguration;
+            configuration = packConfiguration;
             _jwtManager = jwtManager;
         }
         public async Task<Result> Login(LoginRequest request)
         {
-            var key = _packConfiguration.GetValue<string>("AesConfig:Key");
-            var iv = _packConfiguration.GetValue<string>("AesConfig:IV");
+            var key = configuration.GetValue<string>("AesConfig:Key");
+            var iv = configuration.GetValue<string>("AesConfig:IV");
             var encryptePwd = StableAesCrypto.Encrypt(request.Password, key, iv);
             var user = await _unitOfWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Account == request.Account && x.PasswordHash == encryptePwd);
             if (user == null)

@@ -2,6 +2,6 @@
 {
     public class CurrentUser : ICurrentUser
     {
-        public string UserId { get; set; }
+        public long? UserId { get; set; }
     }
 }
