@@ -11,8 +11,8 @@ using PaperTrail.Storage;
 namespace PaperTrail.Storage.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20250124211002_Initital")]
-    partial class Initital
+    [Migration("20250128163652_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,9 @@ namespace PaperTrail.Storage.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("BlogCategory", b =>
@@ -71,12 +74,20 @@ namespace PaperTrail.Storage.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsPublish")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Blogs");
                 });
@@ -157,6 +168,34 @@ namespace PaperTrail.Storage.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("PaperTrail.Storage.Entitys.Essay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Essays");
+                });
+
             modelBuilder.Entity("PaperTrail.Storage.Entitys.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -201,13 +240,13 @@ namespace PaperTrail.Storage.Migrations
                     b.ToTable("RolePermission", (string)null);
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RoleUserBase", b =>
                 {
                     b.Property<int>("RolesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                    b.Property<long>("UsersId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("RolesId", "UsersId");
 
@@ -261,11 +300,11 @@ namespace PaperTrail.Storage.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Si.EntityFramework.PermGuard.Entitys.User", b =>
+            modelBuilder.Entity("Si.EntityFramework.PermGuard.Entitys.UserBase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserType")
                         .IsRequired()
@@ -274,7 +313,7 @@ namespace PaperTrail.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("UserBase");
 
                     b.HasDiscriminator<string>("UserType").HasValue("UserBase");
 
@@ -283,12 +322,21 @@ namespace PaperTrail.Storage.Migrations
 
             modelBuilder.Entity("PaperTrail.Storage.Entitys.User", b =>
                 {
-                    b.HasBaseType("Si.EntityFramework.PermGuard.Entitys.User");
+                    b.HasBaseType("Si.EntityFramework.PermGuard.Entitys.UserBase");
 
                     b.Property<string>("Account")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<string>("AvatarPath")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Github")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -300,7 +348,10 @@ namespace PaperTrail.Storage.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.HasDiscriminator().HasValue("BlogUser");
+                    b.Property<string>("QQ")
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("BlogCategory", b =>
@@ -333,6 +384,17 @@ namespace PaperTrail.Storage.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PaperTrail.Storage.Entitys.Blog", b =>
+                {
+                    b.HasOne("PaperTrail.Storage.Entitys.User", "User")
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PaperTrail.Storage.Entitys.Comment", b =>
                 {
                     b.HasOne("PaperTrail.Storage.Entitys.Blog", "Blog")
@@ -352,6 +414,17 @@ namespace PaperTrail.Storage.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("PaperTrail.Storage.Entitys.Essay", b =>
+                {
+                    b.HasOne("PaperTrail.Storage.Entitys.User", "User")
+                        .WithMany("Essays")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PermissionRole", b =>
                 {
                     b.HasOne("Si.EntityFramework.PermGuard.Entitys.Permission", null)
@@ -367,7 +440,7 @@ namespace PaperTrail.Storage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RoleUserBase", b =>
                 {
                     b.HasOne("Si.EntityFramework.PermGuard.Entitys.Role", null)
                         .WithMany()
@@ -375,7 +448,7 @@ namespace PaperTrail.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Si.EntityFramework.PermGuard.Entitys.User", null)
+                    b.HasOne("Si.EntityFramework.PermGuard.Entitys.UserBase", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -390,6 +463,13 @@ namespace PaperTrail.Storage.Migrations
             modelBuilder.Entity("PaperTrail.Storage.Entitys.Comment", b =>
                 {
                     b.Navigation("Childrens");
+                });
+
+            modelBuilder.Entity("PaperTrail.Storage.Entitys.User", b =>
+                {
+                    b.Navigation("Blogs");
+
+                    b.Navigation("Essays");
                 });
 #pragma warning restore 612, 618
         }

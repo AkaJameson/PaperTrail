@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{E8D33C8D-6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Module.Blog", "PaperTrail.Module.Blog\PaperTrail.Module.Blog.csproj", "{826BBA0E-C068-49A6-920C-5A887E32F42B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperTrail.Model.Manager", "PaperTrail.Model.Manager\PaperTrail.Model.Manager.csproj", "{833DADE4-8884-4E28-BC71-C84C3A458BA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Model.Manager", "PaperTrail.Model.Manager\PaperTrail.Model.Manager.csproj", "{833DADE4-8884-4E28-BC71-C84C3A458BA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

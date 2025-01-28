@@ -12,7 +12,7 @@ namespace PaperTrail.Storage.Entitys
         public string Content {  get; set; }
         public string CreatedBy {  get; set; }
         public DateTime CreatedTime { get; set; }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public virtual User User { get; set; }
     }
 

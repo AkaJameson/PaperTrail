@@ -15,8 +15,8 @@ namespace PaperTrail.Model.Login.ServicesImpl
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration configuration;
-        private readonly JwtManager _jwtManager;
-        public LoginServiceImpl(IUnitOfWork unitOfWork, IConfiguration packConfiguration = null, JwtManager jwtManager = null)
+        private readonly TokenManager _jwtManager;
+        public LoginServiceImpl(IUnitOfWork unitOfWork, IConfiguration packConfiguration = null, TokenManager jwtManager = null)
         {
             _unitOfWork = unitOfWork;
             configuration = packConfiguration;

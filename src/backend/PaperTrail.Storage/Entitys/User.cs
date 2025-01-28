@@ -1,13 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Si.EntityFramework.PermGuard.Entitys;
+using System.Reflection.Emit;
 
 namespace PaperTrail.Storage.Entitys
 {
     /// <summary>
     /// 个人博客项目，只有一个类 一条数据
     /// </summary>
-    public class User:Si.EntityFramework.PermGuard.Entitys.User
+    public class User : UserBase
     {
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Account { get; set; }
         public string PasswordHash { get; set; }
@@ -16,15 +19,8 @@ namespace PaperTrail.Storage.Entitys
         public string? Email { get; set; }
         public string? QQ { get; set; }
         public virtual ICollection<Blog> Blogs { get; set; }
-        public virtual ICollection<Essay> Essays { get; set;}
-        
-    }
-    public class UserRoleConfiguration : Si.EntityFramework.PermGuard.Entitys.RoleUserConfiguration
-    {
-        public override void Configure(EntityTypeBuilder<Si.EntityFramework.PermGuard.Entitys.User> builder)
-        {
-            base.Configure(builder);
-        }
+        public virtual ICollection<Essay> Essays { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
@@ -35,6 +31,8 @@ namespace PaperTrail.Storage.Entitys
             builder.Property(x => x.PasswordHash).HasMaxLength(256);
             builder.HasMany(x => x.Essays).WithOne(x => x.User).HasForeignKey(p => p.UserId);
             builder.HasMany(x => x.Blogs).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+            builder.HasDiscriminator<string>("UserType").HasValue<User>("User");
+
         }
     }
 }

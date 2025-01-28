@@ -15,7 +15,7 @@ namespace PaperTrail.Storage.Entitys
         public string CreatedBy { get; set; }
         public bool IsPublish { get; set; }
         public DateTime CreatedTime { get; set; }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public virtual User User { get; set; }
     }
     public class BlogConfiguration : IEntityTypeConfiguration<Blog>

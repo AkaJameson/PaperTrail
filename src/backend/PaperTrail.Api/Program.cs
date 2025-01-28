@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using PaperTrail.Api.Filter;
 using PaperTrail.Api.Models;
 using PaperTrail.Storage;
 using Si.CoreHub.Extension;
 using Si.CoreHub.Logs;
 using Si.CoreHub.Utility;
-using Si.EntityFramework.Extension;
-using Si.EntityFramework.Extension.Abstraction;
-using Si.EntityFramework.Extension.UnitofWork;
-using Si.EntityFramework.PermGuard.Extensions;
+using Si.EntityFramework.Extension.Extensions;
 using System.Threading.RateLimiting;
 
 namespace PaperTrail.Api
@@ -48,7 +44,7 @@ namespace PaperTrail.Api
             builder.UseKestrel();
             //≈‰÷√ ˝æ›ø‚
             var connectionStr = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddSiDbContext<BlogDbContext>(optionAction =>
+            builder.Services.AddApplicationDbContext<BlogDbContext>(optionAction =>
             {
                 optionAction.UseMySql(connectionStr, ServerVersion.AutoDetect(connectionStr));
                 //¿¡º”‘ÿ
@@ -62,7 +58,7 @@ namespace PaperTrail.Api
                 //≤ª∆Ù∂Ø»Ì…æ≥˝
                 ExtensionOptionsActio.EnableSoftDelete = false;
             });
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork<BlogDbContext>>();
+            builder.Services.AddUnitofWork<BlogDbContext>();
             builder.Services.AddRbacCore(option =>
             {
                 option.ConfigPath = "RbacConfig.xml";

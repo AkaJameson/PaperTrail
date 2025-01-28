@@ -79,8 +79,8 @@ namespace PaperTrail.Storage.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -183,8 +183,8 @@ namespace PaperTrail.Storage.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -237,13 +237,13 @@ namespace PaperTrail.Storage.Migrations
                     b.ToTable("RolePermission", (string)null);
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RoleUserBase", b =>
                 {
                     b.Property<int>("RolesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                    b.Property<long>("UsersId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("RolesId", "UsersId");
 
@@ -297,11 +297,11 @@ namespace PaperTrail.Storage.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Si.EntityFramework.PermGuard.Entitys.User", b =>
+            modelBuilder.Entity("Si.EntityFramework.PermGuard.Entitys.UserBase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserType")
                         .IsRequired()
@@ -310,7 +310,7 @@ namespace PaperTrail.Storage.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("UserBase");
 
                     b.HasDiscriminator<string>("UserType").HasValue("UserBase");
 
@@ -319,7 +319,7 @@ namespace PaperTrail.Storage.Migrations
 
             modelBuilder.Entity("PaperTrail.Storage.Entitys.User", b =>
                 {
-                    b.HasBaseType("Si.EntityFramework.PermGuard.Entitys.User");
+                    b.HasBaseType("Si.EntityFramework.PermGuard.Entitys.UserBase");
 
                     b.Property<string>("Account")
                         .IsRequired()
@@ -348,7 +348,7 @@ namespace PaperTrail.Storage.Migrations
                     b.Property<string>("QQ")
                         .HasColumnType("longtext");
 
-                    b.HasDiscriminator().HasValue("BlogUser");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("BlogCategory", b =>
@@ -437,7 +437,7 @@ namespace PaperTrail.Storage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("RoleUserBase", b =>
                 {
                     b.HasOne("Si.EntityFramework.PermGuard.Entitys.Role", null)
                         .WithMany()
@@ -445,7 +445,7 @@ namespace PaperTrail.Storage.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Si.EntityFramework.PermGuard.Entitys.User", null)
+                    b.HasOne("Si.EntityFramework.PermGuard.Entitys.UserBase", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
