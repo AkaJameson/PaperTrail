@@ -32,3 +32,4 @@
 /src/backend/PaperTrail.Model.Manager/obj
 /src/backend/PaperTrail.Module.Blog/bin/Debug/net8.0
 /src/backend/PaperTrail.Module.Blog/obj
+/src/backend/PaperTrail.Api/obj/Debug/net8.0/PaperTrail.Api.MvcApplicationPartsAssemblyInfo.cs
