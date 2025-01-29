@@ -2,6 +2,7 @@
 using PaperTrail.Storage.Entitys;
 using Si.EntityFramework.Extension.DataBase;
 using Si.EntityFramework.Extension.Entitys;
+using Si.EntityFramework.Extension.Rbac.Entitys;
 using Si.EntityFramework.PermGuard.Entitys;
 
 namespace PaperTrail.Storage
@@ -20,6 +21,7 @@ namespace PaperTrail.Storage
         public DbSet<Role> Roles { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Essay> Essays { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new BlogConfiguration());
@@ -30,6 +32,7 @@ namespace PaperTrail.Storage
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new EssayConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleUserConfiguration()); 
         }
 
     }

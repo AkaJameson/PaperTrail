@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PaperTrail.Storage.Entitys
 {
-    public class Blog : ICreationAudited
+    public class Blog : ICreationAudited, ISoftDelete
     {
         public int Id { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
@@ -17,7 +17,10 @@ namespace PaperTrail.Storage.Entitys
         public DateTime CreatedTime { get; set; }
         public long UserId { get; set; }
         public virtual User User { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedTime { get; set; }
     }
+
     public class BlogConfiguration : IEntityTypeConfiguration<Blog>
     {
         public void Configure(EntityTypeBuilder<Blog> builder)
@@ -36,7 +39,6 @@ namespace PaperTrail.Storage.Entitys
             builder.Property(b => b.Content).HasMaxLength(1000).IsRequired();
             builder.Property(b => b.CreatedBy).HasMaxLength(50).IsRequired();
             builder.Property(b => b.CreatedTime).IsRequired();
-            builder.Property(b => b.IsPublish).IsRequired();
         }
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -55,8 +56,8 @@ namespace PaperTrail.Api
                 ExtensionOptionsActio.EnableSnowflakeId = false;
                 //启动审计
                 ExtensionOptionsActio.EnableAudit = true;
-                //不启动软删除
-                ExtensionOptionsActio.EnableSoftDelete = false;
+                //启动软删除
+                ExtensionOptionsActio.EnableSoftDelete = true;
             });
             builder.Services.AddUnitofWork<BlogDbContext>();
             builder.Services.AddRbacCore(option =>
@@ -150,12 +151,12 @@ namespace PaperTrail.Api
                 app.UseHsts();  // 启用 HSTS 中间件
                 app.UseHttpsRedirection();  // 启用 HTTPS 重定向中间件
             }
+            app.UsePackages(app, app.Services);
+            app.UseRouting();
             //添加权限验证中间件
             app.UseRbacCore<BlogDbContext>();
-            app.UseRouting();
             //添加IP限流中间件
             app.UseRateLimiter();
-            app.UsePackages(app, app.Services);
             app.MapControllers();
             app.Run();
         }

@@ -7,15 +7,15 @@ namespace PaperTrail.Storage.Entitys
     {
         public int Id { get; set; }
         public string Content { get; set; }
-
         public string Name { get; set; }
-
         public string Email { get; set; }
         public int Like { get; set; }
         public DateTime CreateTime { get; set; }
+        public string Ip { get; set; }
         public int CommnetId { get; set; }
         public int BlogId { get; set; }
         public int ParentId { get; set; }
+        public bool isAudit { get; set; }
         public virtual Blog Blog { get; set; }
         public virtual Comment Parent { get; set; }
         public virtual ICollection<Comment> Childrens { get; set; }
