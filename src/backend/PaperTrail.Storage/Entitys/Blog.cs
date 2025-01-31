@@ -35,7 +35,9 @@ namespace PaperTrail.Storage.Entitys
             builder.HasMany(b => b.Categorys).WithMany(c => c.Blogs).UsingEntity(j => j.ToTable("BlogCategorys"));
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Id).ValueGeneratedOnAdd();
-            builder.Property(b => b.Title).HasMaxLength(100).IsRequired();
+            builder.Property(b => b.Title).HasMaxLength(100).IsRequired()
+                .HasCharSet("utf8mb4")
+                .HasCollation("utf8mb4_bin"); ;
             builder.Property(b => b.Content).HasMaxLength(1000).IsRequired();
             builder.Property(b => b.CreatedBy).HasMaxLength(50).IsRequired();
             builder.Property(b => b.CreatedTime).IsRequired();

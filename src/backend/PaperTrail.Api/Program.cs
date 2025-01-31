@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using PaperTrail.Api.Filter;
-using PaperTrail.Api.Models;
 using PaperTrail.Storage;
 using Si.CoreHub.Extension;
 using Si.CoreHub.Logs;
 using Si.CoreHub.Utility;
 using Si.EntityFramework.Extension.Extensions;
 using System.Threading.RateLimiting;
-
 namespace PaperTrail.Api
 {
     public class Program
@@ -32,6 +29,8 @@ namespace PaperTrail.Api
             builder.Logging.ClearProviders();
             //添加自定义日志提供者（输出框架级别日志）
             builder.Host.ConfiguraSystemHub(logPath);
+            //添加日志系统
+            builder.Services.UseLogHub();
             //添加内存事件总线
             builder.Services.AddInMemoryEventBus();
             //使用内存缓存机制
@@ -74,18 +73,6 @@ namespace PaperTrail.Api
 
             }).AddJsonOptions(option => { 
                 option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull; 
-            });
-            //添加CurrentUser获取器
-            builder.Services.AddCurrentUserAccessor((privider) =>
-            {
-                var httpContext = privider.GetService<HttpContextAccessor>();
-                var idStr = httpContext?.HttpContext?.Items["Id"]?.ToString();
-#pragma warning disable CS8603 // 可能返回 null 引用。
-                return idStr == null ? null
-                                     : long.TryParse(idStr,out var id)
-                                     ? new CurrentUser { UserId = id}
-                                     : null;
-#pragma warning restore CS8603 // 可能返回 null 引用。
             });
             //添加IP限流
             builder.Services.AddRateLimiter(options =>
@@ -151,10 +138,13 @@ namespace PaperTrail.Api
                 app.UseHsts();  // 启用 HSTS 中间件
                 app.UseHttpsRedirection();  // 启用 HTTPS 重定向中间件
             }
-            app.UsePackages(app, app.Services);
+            //用户信息解析器（必须在Routing之前）配合权限验证中间件进行使用
+            app.UseInfoParser();
             app.UseRouting();
             //添加权限验证中间件
             app.UseRbacCore<BlogDbContext>();
+            //使用包
+            app.UsePackages(app, app.Services);
             //添加IP限流中间件
             app.UseRateLimiter();
             app.MapControllers();

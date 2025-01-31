@@ -10,8 +10,8 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
     public class BlogServiceImpl : IBlogService
     {
         private readonly IUnitOfWork _unitofWork;
-        private readonly ICurrentUser currentUser;
-        public BlogServiceImpl(IUnitOfWork unitofWork, ICurrentUser currentUser)
+        private readonly IUserInfo currentUser;
+        public BlogServiceImpl(IUnitOfWork unitofWork, IUserInfo currentUser)
         {
             _unitofWork = unitofWork;
             this.currentUser = currentUser;
@@ -64,17 +64,17 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                     {
                         p.Name,
                         p.Description,
-                        p.CreatedTime,
+                        CreateTime = p.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss")
                     }),
                     tags = blog.Tags.Select(p => new
                     {
                         p.Name,
                         p.Description,
-                        p.CreatedTime
+                        CreateTime = p.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss")
                     }),
                     title = blog.Title,
                     content = blog.Content,
-                    createTime = blog.CreatedTime,
+                    createTime = blog.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     ispublish = blog.IsPublish,
                 },
                 comments = commentTree
@@ -83,8 +83,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
 
         public async Task<Result> GetPostListAsync(BlogGet blogGet)
         {
-            var blogList = (await _unitofWork.GetRepository<Blog>().GetPagedAsync(blogGet.PageIndex!.Value, blogGet.PageSize!.Value, p => p.IsPublish == blogGet.isPublish
-                                                                                && p.IsDeleted == false, p => p.Id, false));
+            var blogList = await _unitofWork.GetRepository<Blog>()
+                .GetPagedAsync(blogGet.PageIndex.Value, blogGet.PageSize.Value,
+                p => p.IsPublish == blogGet.isPublish && p.IsDeleted == false, p => p.Id, false);
             var result = new List<object>();
             foreach (var item in blogList.Items?.ToList() ?? new List<Blog>())
             {
@@ -92,7 +93,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     id = item.Id,
                     title = item.Title,
-                    content = item.Content.Substring(0, 200) + "...",
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
                     publishTime = item.CreatedTime,
                     tags = item.Tags.Select(p => p.Name).ToList(),
                     category = item.Categorys.Select(p => p.Name).ToList(),
@@ -108,7 +109,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             {
                 return Result.Failed("该标签下没有文章");
             }
-            var blogList = blogs.Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
+            var blogList = blogs.Where(p=>p.IsPublish == blogGet.isPublish).Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
             var result = new List<object>();
             foreach (var item in blogList?.ToList() ?? new List<Blog>())
             {
@@ -116,7 +117,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     id = item.Id,
                     title = item.Title,
-                    content = item.Content.Substring(0, 200) + "...",
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
                     publishTime = item.CreatedTime,
                     tags = item.Tags.Select(p => p.Name).ToList(),
                     category = item.Categorys.Select(p => p.Name).ToList(),
@@ -131,7 +132,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             {
                 return Result.Failed("该标签下没有文章");
             }
-            var blogList = blogs.Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
+            var blogList = blogs.Where(p => p.IsPublish == blogGet.isPublish).Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
             var result = new List<object>();
             foreach (var item in blogList?.ToList() ?? new List<Blog>())
             {
@@ -139,8 +140,8 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     id = item.Id,
                     title = item.Title,
-                    content = item.Content.Substring(0, 200) + "...",
-                    publishTime = item.CreatedTime,
+                    content = item.Content.Length>100?item.Content.Substring(0,100)+"...":item.Content,
+                    publishTime = item.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     tags = item.Tags.Select(p => p.Name).ToList(),
                     category = item.Categorys.Select(p => p.Name).ToList(),
                 });

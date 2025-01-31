@@ -11,24 +11,24 @@ namespace PaperTrail.Module.Bloger.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task<Result> UpdatePassword(int userId, UpdateUserPasswordRequest request);
+        Task<Result> UpdatePassword(long userId, UpdateUserPasswordRequest request);
         /// <summary>
         /// 更新头像
         /// </summary>
         /// <param name="avaterPath"></param>
         /// <returns></returns>
-        Task<Result> UploadAvater(int userId, IFormFile file, HttpRequest request);
+        Task<Result> UploadAvater(long userId, IFormFile file, HttpRequest request);
         /// <summary>
         /// 更新用户信息
         /// </summary>
         /// <param name="UserName"></param>
         /// <returns></returns>
-        Task<Result> EditUserInfo(int userId, EditUserInfo userInfo);
+        Task<Result> EditUserInfo(long userId, EditUserInfo userInfo);
         /// <summary>
         /// 用户详情
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Result> UserDetail(int userId);
+        Task<Result> UserDetail(long userId);
     }
 }

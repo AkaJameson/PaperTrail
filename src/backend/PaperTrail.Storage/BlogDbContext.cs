@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaperTrail.Storage.Entitys;
+using Si.EntityFramework.Extension.Abstraction;
 using Si.EntityFramework.Extension.DataBase;
 using Si.EntityFramework.Extension.Entitys;
 using Si.EntityFramework.Extension.Rbac.Entitys;
@@ -9,7 +10,7 @@ namespace PaperTrail.Storage
 {
     public class BlogDbContext : ApplicationDbContext
     {
-        public BlogDbContext(DbContextOptions options, ExtensionDbOptions optionsExtension, ICurrentUser currentUser = null) : base(options, optionsExtension, currentUser)
+        public BlogDbContext(DbContextOptions options, ExtensionDbOptions optionsExtension, IUserInfo sessions = null) : base(options, optionsExtension, sessions)
         {
         }
 

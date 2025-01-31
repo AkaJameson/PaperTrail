@@ -9,7 +9,7 @@
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
-		<PackageVersion Include="Si.EntityFramework.Extension" Version="8.1.8" />
+		<PackageVersion Include="Si.EntityFramework.Extension" Version="8.3.1" />
 		<PackageVersion Include="Si.CoreHub" Version="1.0.7" />
 		<PackageVersion Include="Lazy.Captcha.Core" Version="2.0.8" />
 		<!-- 显式指定所有 Microsoft.Extensions 包版本 -->

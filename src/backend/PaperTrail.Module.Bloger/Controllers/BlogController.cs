@@ -36,7 +36,7 @@ namespace PaperTrail.Module.Bloger.Controllers
         /// <returns>包含帖子列表的查询结果。</returns>
         [AllowAnonymous]
         [HttpPost]
-        public async Task<Result> GetPostList([FromQuery] BlogGet blogGet)
+        public async Task<Result> GetPostList([FromBody] BlogGet blogGet)
         {
             return await blogService.GetPostListAsync(blogGet);
         }

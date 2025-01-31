@@ -3,22 +3,23 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Microsoft.Extensions.Logging;
+    using Si.CoreHub.Logs;
 
     public class GlobalExceptionFilter : IAsyncExceptionFilter
     {
-        private readonly ILogger<GlobalExceptionFilter> _logger;
+        private readonly ILogHub _logger;
         private readonly IHostEnvironment _env;
 
-        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger, IHostEnvironment env)
+        public GlobalExceptionFilter(ILogHub logHub, IHostEnvironment env)
         {
-            _logger = logger;
+            _logger = logHub;
             _env = env;
         }
 
         public Task OnExceptionAsync(ExceptionContext context)
         {
             // 记录错误日志
-            _logger.LogError(context.Exception, "Global exception caught");
+            _logger.Error(context.Exception+context.Exception.StackTrace);
 
             // 生产环境返回简化信息，开发环境返回详细信息
             object error = _env.IsDevelopment()

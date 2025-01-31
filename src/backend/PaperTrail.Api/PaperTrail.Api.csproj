@@ -18,7 +18,6 @@
 		<ProjectReference Include="..\PaperTrail.Storage\PaperTrail.Storage.csproj" />
 		<ProjectReference Include="..\PaperTrail.Utilities\PaperTrail.Utilities.csproj" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<None Update="localhost.pfx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -20,9 +20,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             this.configuration = configuration;
         }
 
-        public async Task<Result> EditUserInfo(int userId, EditUserInfo userInfo)
+        public async Task<Result> EditUserInfo(long userId, EditUserInfo userInfo)
         {
-            var user = await _unitofWork.GetRepository<User>().GetByIdAsync(userId);
+            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return Result.Failed("用户不存在");
@@ -47,9 +47,10 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             return Result.Successed("更新成功");
         }
 
-        public async Task<Result> UpdatePassword(int userId, UpdateUserPasswordRequest request)
+        public async Task<Result> UpdatePassword(long userId, UpdateUserPasswordRequest request)
         {
-            var user = await _unitofWork.GetRepository<User>().GetByIdAsync(userId);
+            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Id == userId);
+
             if (user == null)
             {
                 return Result.Failed("用户不存在");
@@ -73,9 +74,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             }
         }
 
-        public async Task<Result> UploadAvater(int userId, IFormFile file, HttpRequest request)
+        public async Task<Result> UploadAvater(long userId, IFormFile file, HttpRequest request)
         {
-            var user = await _unitofWork.GetRepository<User>().GetByIdAsync(userId);
+            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return Result.Failed("用户不存在");
@@ -104,9 +105,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             });
         }
 
-        public async Task<Result> UserDetail(int userId)
+        public async Task<Result> UserDetail(long userId)
         {
-            var user = await _unitofWork.GetRepository<User>().GetByIdAsync(userId);
+            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(p=>p.Id==userId);
             if (user == null)
             {
                 return Result.Failed("用户不存在");
@@ -116,7 +117,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 userName = user.Name,
                 qq = user.QQ ?? string.Empty,
                 github = user.Github ?? string.Empty,
-                email = user.Email,
+                email = user.Email??string.Empty,
                 avatar = user.AvatarPath ?? string.Empty,
                 blogCount = user.Blogs.Count,
                 essayCount = user.Essays.Count,

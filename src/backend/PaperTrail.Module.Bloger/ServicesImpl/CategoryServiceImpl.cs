@@ -38,7 +38,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     tag = p.Name,
                     descirption = p.Description,
-                    createTime = p.CreatedTime
+                    createTime = p.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss")
                 }).ToList()
             });
         }
@@ -56,6 +56,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 category.Description = updateCategoryRequest.newDescription;
             }
             await _unitofWork.GetRepository<Category>().UpdateAsync(category);
+            _unitofWork.CommitAsync();
             return Result.Successed("更新成功");
         }
     }

@@ -27,17 +27,12 @@ namespace PaperTrail.Storage.Entitys
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(x => x.Name).HasMaxLength(50);
-            builder.Property(x => x.Account).HasMaxLength(50);
-            builder.Property(x => x.PasswordHash).HasMaxLength(256);
+            builder.Property(x => x.Account).HasMaxLength(50).HasCharSet("utf8mb4")
+                .HasCollation("utf8mb4_bin");
+            builder.Property(x => x.PasswordHash).HasMaxLength(256).HasCharSet("utf8mb4")
+                .HasCollation("utf8mb4_bin"); 
             builder.HasMany(x => x.Essays).WithOne(x => x.User).HasForeignKey(p => p.UserId);
             builder.HasMany(x => x.Blogs).WithOne(x => x.User).HasForeignKey(x => x.UserId);
-        }
-    }
-    public class RoleUserConfiguration : IEntityTypeConfiguration<UserRole>
-    {
-        public void Configure(EntityTypeBuilder<UserRole> builder)
-        {
-            builder.HasKey(x => new { x.UserId, x.RoleId });
         }
     }
 }

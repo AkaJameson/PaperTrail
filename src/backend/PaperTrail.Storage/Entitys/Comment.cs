@@ -28,7 +28,8 @@ namespace PaperTrail.Storage.Entitys
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Id).ValueGeneratedOnAdd();
             builder.Property(c => c.Content).HasMaxLength(1000);
-            builder.Property(c => c.Name).HasMaxLength(50);
+            builder.Property(c => c.Name).HasMaxLength(50).HasCharSet("utf8mb4")
+                .HasCollation("utf8mb4_bin"); 
             builder.Property(c => c.Email).HasMaxLength(100);
             builder.Property(c => c.Like).HasDefaultValue(0);
             builder.Property(c => c.CreateTime).IsRequired();

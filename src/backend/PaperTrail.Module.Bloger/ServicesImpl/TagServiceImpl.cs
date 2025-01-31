@@ -24,7 +24,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             await _unitofWork.GetRepository<Tag>().AddAsync(new Tag
             {
                 Name = tag.TagName,
-                Description = tag.Description
+                Description = tag.Description,
             });
             await _unitofWork.CommitAsync();
             return Result.Successed("添加成功");
@@ -39,14 +39,14 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     tag = p.Name,
                     descirption = p.Description,
-                    createTime = p.CreatedTime
+                    CreatedTime = p.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss")
                 }).ToList()
             });
         }
 
         public async Task<Result> UpdateTag(UpdateTagRequest updateTagRequest)
         {
-            if (!await _unitofWork.GetRepository<Tag>().ExistsAsync(p => p.Name == updateTagRequest.newTagName))
+            if (!await _unitofWork.GetRepository<Tag>().ExistsAsync(p => p.Name == updateTagRequest.TagName))
             {
                 return Result.Failed("标签不存在");
             }

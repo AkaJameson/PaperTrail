@@ -9,11 +9,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
     public class CommentServiceImpl : ICommentService
     {
         private readonly IUnitOfWork _unitofWork;
-        private readonly ICurrentUser _currentUser;
-        public CommentServiceImpl(IUnitOfWork unitofWork, ICurrentUser currentUser)
+        public CommentServiceImpl(IUnitOfWork unitofWork)
         {
             _unitofWork = unitofWork;
-            _currentUser = currentUser;
         }
         public async Task<Result> AuditComment(List<int> commentId)
         {
@@ -70,7 +68,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                     item.Email,
                     item.Ip,
                     item.Content,
-                    item.CreateTime
+                    CreateTime = item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")
                 });
             }
             return Result.Successed(new{ result,total = unAuditlist.TotalCount}, "获取成功");

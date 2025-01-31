@@ -6,6 +6,7 @@ using PaperTrail.Module.Bloger.Services;
 using PaperTrail.Storage.Enums;
 using Si.CoreHub;
 using Si.CoreHub.OperateResult;
+using Si.EntityFramework.Extension.Abstraction;
 using Si.EntityFramework.PermGuard.Handlers;
 
 namespace PaperTrail.Module.Bloger.Controllers
@@ -13,9 +14,9 @@ namespace PaperTrail.Module.Bloger.Controllers
     [ApiController]
     public class SystemUserController : DefaultController
     {
-        private readonly ICurrentUser currentUser;
+        private readonly IUserInfo currentUser;
         private readonly IUserService systemUserService;
-        public SystemUserController(ICurrentUser currentUser, IUserService systemUserService)
+        public SystemUserController(IUserService systemUserService, IUserInfo currentUser = null)
         {
             this.currentUser = currentUser;
             this.systemUserService = systemUserService;
@@ -34,11 +35,11 @@ namespace PaperTrail.Module.Bloger.Controllers
             {
                 return Result.Failed("用户不存在");
             };
-            if (request.oldPassword == request.confirmPassword)
+            if (request.oldPassword != request.confirmPassword)
             {
                 return Result.Failed("旧密码和确认密码不一致");
             }
-            return await systemUserService.UpdatePassword((int)currentUser.UserId, request);
+            return await systemUserService.UpdatePassword(currentUser.UserId, request);
         }
 
         [Permission(PermissionConst.Write)]
@@ -49,7 +50,7 @@ namespace PaperTrail.Module.Bloger.Controllers
             {
                 return Result.Failed("用户不存在");
             };
-            return await systemUserService.EditUserInfo((int)currentUser.UserId, request);
+            return await systemUserService.EditUserInfo(currentUser.UserId, request);
         }
         [Permission(PermissionConst.Write)]
         [HttpPost]
@@ -63,7 +64,7 @@ namespace PaperTrail.Module.Bloger.Controllers
             {
                 return Result.Failed("文件为空");
             }
-            return await systemUserService.UploadAvater((int)currentUser.UserId, file, HttpContext.Request);
+            return await systemUserService.UploadAvater(currentUser.UserId, file, HttpContext.Request);
         }
 
     }

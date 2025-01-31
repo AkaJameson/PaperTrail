@@ -4,6 +4,6 @@
     {
         public string CategoryName { get; set; }
         public string newCategoryName { get; set; }
-        public string newDescription { get; set; }
+        public string? newDescription { get; set; }
     }
 }
