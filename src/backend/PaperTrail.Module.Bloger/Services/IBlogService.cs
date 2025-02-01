@@ -41,5 +41,34 @@ namespace PaperTrail.Module.Bloger.Services
         /// <param name="blogGet"></param>
         /// <returns></returns>
         Task<Result> GetPostListByCategoryAsync(string category, BlogGet blogGet);
+
+        /// <summary>
+        /// 根据标签获取博客文章列表
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="blogGet"></param>
+        /// <returns></returns>
+        Task<Result> GetPostListByTagPublicAsync(string tag, BlogGetPublish blogGet);
+        
+        /// <summary>
+        /// 根据分类获取博客文章列表
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="blogGet"></param>
+        /// <returns></returns>
+        Task<Result> GetPostListByCategoryPublicAsync(string category, BlogGetPublish blogGet);
+
+        /// <summary>
+        /// 获取文章详情
+        /// </summary>
+        /// <param name="blogGet"></param>
+        /// <returns></returns>
+        Task<Result> GetPostListPublicAsync(BlogGetPublish blogGet);
+        /// <summary>
+        /// 获取删除的文章列表
+        /// </summary>
+        /// <param name="blogGet"></param>
+        /// <returns></returns>
+        Task<Result> GetPostListDeleteAsync(BlogGet blogGet);
     }
 }

@@ -4,6 +4,7 @@ using PaperTrail.Module.Bloger.Services;
 using PaperTrail.Storage.Entitys;
 using Si.CoreHub.OperateResult;
 using Si.EntityFramework.Extension.Abstraction;
+using Si.EntityFramework.Extension.Extensions;
 
 namespace PaperTrail.Module.Bloger.ServicesImpl
 {
@@ -17,38 +18,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             this.currentUser = currentUser;
         }
 
-        public async Task<Result> CreatePostAsync(BlogCreate post)
-        {
-            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Id == currentUser.UserId);
-            if (user == null)
-                return Result.Failed("用户不存在");
-            var tags = (await _unitofWork.GetRepository<Tag>().FindAsync(x => post.tagId.Contains(x.Id))).ToList();
-            var categorys = (await _unitofWork.GetRepository<Category>().FindAsync(x => post.categoryId.Contains(x.Id))).ToList();
-            var newBlog = new Blog
-            {
-                UserId = user.Id,
-                Title = post.Title,
-                Content = post.Content,
-                Tags = tags,
-                Categorys = categorys,
-                IsPublish = post.isPublish
-            };
-            user.Blogs.Add(newBlog);
-            await _unitofWork.CommitAsync();
-            return Result.Successed("添加成功");
-        }
-
-        public async Task<Result> DeletePostAsync(int id)
-        {
-            var blog = await _unitofWork.GetRepository<Blog>().SingleOrDefaultAsync(x => x.Id == id && x.UserId == currentUser.UserId);
-            if (blog == null)
-            {
-                return Result.Failed("文章不存在");
-            }
-            await _unitofWork.GetRepository<Blog>().SoftDeleteAsync(blog);
-            await _unitofWork.CommitAsync();
-            return Result.Successed("删除成功");
-        }
+        #region Publish
         public async Task<Result> GetPostAsync(int id)
         {
             var blog = await _unitofWork.GetRepository<Blog>().SingleOrDefaultAsync(x => x.Id == id && x.UserId == currentUser.UserId);
@@ -80,12 +50,59 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 comments = commentTree
             });
         }
+        public async Task<Result> GetPostListByTagPublicAsync(string tag, BlogGetPublish blogGet)
+        {
+            var blogs = (await _unitofWork.GetRepository<Tag>().Query().SingleOrDefaultAsync(p => p.Name == tag))?.Blogs;
+            if (blogs == null)
+            {
+                return Result.Failed("该标签下没有文章");
+            }
+            var blogList = blogs.Where(p => p.IsPublish).Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
+            var result = new List<object>();
+            foreach (var item in blogList?.ToList() ?? new List<Blog>())
+            {
+                result.Add(new
+                {
+                    id = item.Id,
+                    title = item.Title,
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
+                    publishTime = item.CreatedTime,
+                    tags = item.Tags.Select(p => p.Name).ToList(),
+                    category = item.Categorys.Select(p => p.Name).ToList(),
+                });
+            }
+            return Result.Successed(result, "获取成功");
+        }
 
-        public async Task<Result> GetPostListAsync(BlogGet blogGet)
+        public async Task<Result> GetPostListByCategoryPublicAsync(string category, BlogGetPublish blogGet)
+        {
+            var blogs = (await _unitofWork.GetRepository<Category>().Query().SingleOrDefaultAsync(p => p.Name == category))?.Blogs;
+            if (blogs == null)
+            {
+                return Result.Failed("该标签下没有文章");
+            }
+            var blogList = blogs.Where(p => p.IsPublish).Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
+            var result = new List<object>();
+            foreach (var item in blogList?.ToList() ?? new List<Blog>())
+            {
+                result.Add(new
+                {
+                    id = item.Id,
+                    title = item.Title,
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
+                    publishTime = item.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    tags = item.Tags.Select(p => p.Name).ToList(),
+                    category = item.Categorys.Select(p => p.Name).ToList(),
+                });
+            }
+            return Result.Successed(result, "获取成功");
+        }
+
+        public async Task<Result> GetPostListPublicAsync(BlogGetPublish blogGet)
         {
             var blogList = await _unitofWork.GetRepository<Blog>()
                 .GetPagedAsync(blogGet.PageIndex.Value, blogGet.PageSize.Value,
-                p => p.IsPublish == blogGet.isPublish && p.IsDeleted == false, p => p.Id, false);
+                p => p.IsPublish && !p.IsDeleted, p => p.Id, false);
             var result = new List<object>();
             foreach (var item in blogList.Items?.ToList() ?? new List<Blog>())
             {
@@ -101,7 +118,60 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             }
             return Result.Successed(new { result, total = blogList.TotalCount }, "获取成功");
         }
+        #endregion
 
+        #region Manager
+        public async Task<Result> GetPostListAsync(BlogGet blogGet)
+        {
+            var blogList = await _unitofWork.GetRepository<Blog>()
+                .GetPagedAsync(blogGet.PageIndex.Value, blogGet.PageSize.Value,
+                p => p.IsPublish == blogGet.isPublish && !p.IsDeleted, p => p.Id, false);
+            var result = new List<object>();
+            foreach (var item in blogList.Items?.ToList() ?? new List<Blog>())
+            {
+                result.Add(new
+                {
+                    id = item.Id,
+                    title = item.Title,
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
+                    publishTime = item.CreatedTime,
+                    tags = item.Tags.Select(p => p.Name).ToList(),
+                    category = item.Categorys.Select(p => p.Name).ToList(),
+                });
+            }
+            return Result.Successed(new { result, total = blogList.TotalCount }, "获取成功");
+        }
+        public async Task<Result> CreatePostAsync(BlogCreate post)
+        {
+            var user = await _unitofWork.GetRepository<User>().SingleOrDefaultAsync(x => x.Id == currentUser.UserId);
+            if (user == null)
+                return Result.Failed("用户不存在");
+            var tags = (await _unitofWork.GetRepository<Tag>().FindAsync(x => post.tagId.Contains(x.Id))).ToList();
+            var categorys = (await _unitofWork.GetRepository<Category>().FindAsync(x => post.categoryId.Contains(x.Id))).ToList();
+            var newBlog = new Blog
+            {
+                UserId = user.Id,
+                Title = post.Title,
+                Content = post.Content,
+                Tags = tags,
+                Categorys = categorys,
+                IsPublish = post.isPublish
+            };
+            user.Blogs.Add(newBlog);
+            await _unitofWork.CommitAsync();
+            return Result.Successed("添加成功");
+        }
+        public async Task<Result> DeletePostAsync(int id)
+        {
+            var blog = await _unitofWork.GetRepository<Blog>().SingleOrDefaultAsync(x => x.Id == id && x.UserId == currentUser.UserId);
+            if (blog == null)
+            {
+                return Result.Failed("文章不存在");
+            }
+            await _unitofWork.GetRepository<Blog>().SoftDeleteAsync(blog);
+            await _unitofWork.CommitAsync();
+            return Result.Successed("删除成功");
+        }
         public async Task<Result> GetPostListByTagAsync(string tag, BlogGet blogGet)
         {
             var blogs = (await _unitofWork.GetRepository<Tag>().Query().SingleOrDefaultAsync(p => p.Name == tag))?.Blogs;
@@ -109,9 +179,10 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             {
                 return Result.Failed("该标签下没有文章");
             }
-            var blogList = blogs.Where(p=>p.IsPublish == blogGet.isPublish).Skip((blogGet.PageIndex.Value - 1) * blogGet.PageSize.Value).Take(blogGet.PageSize.Value).ToList();
+            var blogList =await blogs.AsQueryable().Where(p => p.IsPublish == blogGet.isPublish).ToPagedListAsync(blogGet.PageIndex.Value, blogGet.PageSize.Value);
             var result = new List<object>();
-            foreach (var item in blogList?.ToList() ?? new List<Blog>())
+
+            foreach (var item in blogList.Items?? new List<Blog>())
             {
                 result.Add(new
                 {
@@ -140,7 +211,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
                 {
                     id = item.Id,
                     title = item.Title,
-                    content = item.Content.Length>100?item.Content.Substring(0,100)+"...":item.Content,
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
                     publishTime = item.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     tags = item.Tags.Select(p => p.Name).ToList(),
                     category = item.Categorys.Select(p => p.Name).ToList(),
@@ -148,6 +219,25 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             }
             return Result.Successed(result, "获取成功");
         }
+        public async Task<Result> GetPostListDeleteAsync(BlogGet blogGet)
+        {
+            var blogs = await _unitofWork.GetRepository<Blog>().GetPagedAsync(blogGet.PageIndex.Value, blogGet.PageSize.Value, p => p.IsDeleted == true, p => p.Id);
+            var result = new List<object>();
+            foreach (var item in blogs.Items?.ToList() ?? new List<Blog>())
+            {
+                result.Add(new
+                {
+                    id = item.Id,
+                    title = item.Title,
+                    content = item.Content.Length > 100 ? item.Content.Substring(0, 100) + "..." : item.Content,
+                    publishTime = item.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    tags = item.Tags.Select(p => p.Name).ToList(),
+                    category = item.Categorys.Select(p => p.Name).ToList(),
+                });
+            }
+            return Result.Successed(result, "获取成功");
+        }
+
         public async Task<Result> UpdatePostAsync(BlogUpdate post)
         {
             var blog = await _unitofWork.GetRepository<Blog>().SingleOrDefaultAsync(x => x.Id == post.Id);
@@ -177,6 +267,9 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             await _unitofWork.CommitAsync();
             return Result.Successed("更新成功");
         }
+
+
+
         // 构建评论树形结构，选择所需的字段
         private List<object> BuildCommentTree(IEnumerable<Comment> comments)
         {
@@ -228,6 +321,7 @@ namespace PaperTrail.Module.Bloger.ServicesImpl
             return childTree;
         }
 
+        #endregion
 
     }
 }
