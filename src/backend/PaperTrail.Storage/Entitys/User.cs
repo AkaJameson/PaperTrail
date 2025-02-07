@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Si.EntityFramework.Extension.Abstraction;
-using Si.EntityFramework.Extension.Rbac.Entitys;
-using Si.EntityFramework.PermGuard.Entitys;
 
 namespace PaperTrail.Storage.Entitys
 {

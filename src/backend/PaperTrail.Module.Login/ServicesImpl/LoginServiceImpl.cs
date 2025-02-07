@@ -6,7 +6,7 @@ using PaperTrail.Storage.Enums;
 using PaperTrail.Utilities;
 using Si.CoreHub.OperateResult;
 using Si.EntityFramework.Extension.Abstraction;
-using Si.EntityFramework.PermGuard.Handlers;
+using Si.EntityFramework.Extension.Rbac.Handlers;
 
 namespace PaperTrail.Module.Login.ServicesImpl
 {

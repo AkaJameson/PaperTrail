@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Storage", "Paper
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{0F82B3B3-E1C0-41B1-866B-7C4C8E011C85}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperTrail.Utilities", "PaperTrail.Utilities\PaperTrail.Utilities.csproj", "{CA22D0A9-324C-49D3-A7FF-6DF44EC4D8CB}"

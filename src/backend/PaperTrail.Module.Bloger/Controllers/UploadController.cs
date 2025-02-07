@@ -4,7 +4,7 @@ using PaperTrail.Module.Bloger.Services;
 using PaperTrail.Storage.Enums;
 using Si.CoreHub;
 using Si.CoreHub.OperateResult;
-using Si.EntityFramework.PermGuard.Handlers;
+using Si.EntityFramework.Extension.Rbac.Handlers;
 
 namespace PaperTrail.Module.Bloger.Controllers
 {
