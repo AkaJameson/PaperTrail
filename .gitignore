@@ -37,3 +37,5 @@
 /src/backend/PaperTrail.Module.Login/obj
 /src/backend/PaperTrail.Module.Bloger/bin/Debug/net8.0
 /src/backend/PaperTrail.Module.Bloger/obj
+/src/backend/PaperTrail.Storage/bin/Release/net8.0
+/src/backend/PaperTrail.Utilities/bin/Release/net8.0
