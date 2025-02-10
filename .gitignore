@@ -122,3 +122,82 @@
 /src/backend/PaperTrail.Api/obj/Release/net8.0/refint/PaperTrail.Api.dll
 /src/backend/PaperTrail.Api/Properties/PublishProfiles/FolderProfile.pubxml.user
 /src/backend/PaperTrail.Api/PaperTrail.Api.csproj.user
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
+# Node modules
+/node_modules/
+
+# Local environment files
+.env.*.local
+
+# Log files
+*.log
+
+# Dependency directories
+jspm_packages/
+
+# Build output
+/dist/
+/build/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# npm package lock files (only if you want to ignore them)
+# package-lock.json
+# yarn.lock
+
+# Coverage directory used by tools like istanbul
+/coverage/
+
+# Temporary files
+*.swp
+*.swo
+
+# VuePress files
+.vuepress/dist/
+
+# Storybook build output
+/storybook-static/
+
+# SASS/SCSS cache
+.sass-cache/
+
+# Yarn error logs
+.yarn-error.log
+
+# pnpm store
+.pnpm-store/

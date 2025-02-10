@@ -7,6 +7,7 @@
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SkiaSharp" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" />
 	</ItemGroup>
 
 </Project>
