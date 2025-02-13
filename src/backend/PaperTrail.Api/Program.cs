@@ -74,6 +74,16 @@ namespace PaperTrail.Api
             }).AddJsonOptions(option => { 
                 option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull; 
             });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Allows", policy =>
+                {
+                    // 允许来自 localhost:5173 的跨域请求
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
             //添加IP限流
             builder.Services.AddRateLimiter(options =>
             {
@@ -140,6 +150,7 @@ namespace PaperTrail.Api
             }
             //用户信息解析器（必须在Routing之前）配合权限验证中间件进行使用
             app.UseInfoParser();
+            app.UseCors("Allows");
             app.UseRouting();
             //添加权限验证中间件
             app.UseRbacCore<BlogDbContext>();

@@ -1,29 +1,30 @@
 // httpclient.js
 import axios from 'axios';
-import { ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus'
 
 class HttpClient {
   constructor(baseURL, options = {}) {
+    this.defaultOptions = {
+      returnNativeData: true,  // 是否返回原始response.data
+      needAuth: false,          // 是否需要鉴权头
+      isFormData: false,        // 是否是form-data格式
+      showError: true,          // 是否显示错误提示
+      ignoressl:true,
+      ...options
+    };
     this.instance = axios.create({
       baseURL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
       }
-    });
-
-    this.defaultOptions = {
-      returnNativeData: false,  // 是否返回原始response.data
-      needHeaders: false,       // 是否需要返回headers
-      needAuth: false,          // 是否需要鉴权头
-      isFormData: false,        // 是否是form-data格式
-      showError: true,          // 是否显示错误提示
-      ...options
-    };
-
+    }
+    );
+    
     // 请求拦截器
     this.instance.interceptors.request.use(
       config => {
+        config.headers['Access-Control-Allow-Origin'] = "*";
         // 处理form-data格式
         if (this.defaultOptions.isFormData && config.data) {
           const formData = new FormData();
@@ -33,7 +34,7 @@ class HttpClient {
           config.data = formData;
           config.headers['Content-Type'] = 'multipart/form-data';
         }
-
+        
         // 添加鉴权头
         if (this.defaultOptions.needAuth && this.authToken) {
           config.headers.Authorization = `Bearer ${this.authToken}`;
@@ -48,24 +49,17 @@ class HttpClient {
     this.instance.interceptors.response.use(
       response => {
         const res = {
-          data: this.defaultOptions.returnNativeData 
-            ? response.data 
+          data: this.defaultOptions.returnNativeData
+            ? response.data
             : response.data.data,
           status: response.status,
-          headers: this.defaultOptions.needHeaders 
-            ? response.headers 
-            : null
         };
         return res;
       },
       error => {
         if (this.defaultOptions.showError) {
           let message = error.response?.data?.message || error.message;
-          ElMessage({
-            message: `请求错误: ${message}`,
-            type: 'error',
-            duration: 3000
-          });
+          ElMessage.error(`请求失败, ${message}`)
         }
         return Promise.reject(error);
       }
