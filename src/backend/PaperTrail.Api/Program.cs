@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using PaperTrail.Api.Filter;
 using PaperTrail.Storage;
@@ -71,17 +72,18 @@ namespace PaperTrail.Api
             {
                 option.Filters.Add<GlobalExceptionFilter>();
 
-            }).AddJsonOptions(option => { 
-                option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull; 
+            }).AddJsonOptions(option =>
+            {
+                option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
             });
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("Allows", policy =>
                 {
-                    // 允许来自 localhost:5173 的跨域请求
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
+                    policy.AllowAnyMethod()
+                      .SetIsOriginAllowed(_ => true)
+                      .AllowAnyHeader()
+                      .AllowCredentials().WithExposedHeaders("Captcha-Id");
                 });
             });
             //添加IP限流
@@ -142,8 +144,7 @@ namespace PaperTrail.Api
                     options.RoutePrefix = string.Empty;
                 });
             }
-            // 使用 HSTS 配置
-            if (app.Environment.IsProduction())
+            if (ServiceLocator.Configuration.GetValue<bool>("AllowRedirect"))
             {
                 app.UseHsts();  // 启用 HSTS 中间件
                 app.UseHttpsRedirection();  // 启用 HTTPS 重定向中间件

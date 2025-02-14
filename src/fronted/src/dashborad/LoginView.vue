@@ -26,9 +26,9 @@ const captcha = reactive({
     id:null
 })
 const httpclient = inject("httpclient")
-onMounted(()=>{
-    var res = httpclient.get("/api/Login/Captcha");
-    console.log(JSON.stringify(res));
+onMounted(async ()=>{
+    var res = await httpclient.get("/api/Login/Captcha");
+    console.log(res);
 })
 //登录
 const LoginCheck = () => {
