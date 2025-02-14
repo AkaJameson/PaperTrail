@@ -201,3 +201,6 @@ Thumbs.db
 
 # pnpm store
 .pnpm-store/
+/src/backend/PaperTrail.Api/bin/Release/net8.0/linux-x64/appsettings.json
+/src/backend/PaperTrail.Api/bin/Release/publish/appsettings.json
+/src/backend/PaperTrail.Api/bin/Release/net8.0/appsettings.json
