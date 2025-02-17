@@ -21,13 +21,16 @@ namespace PaperTrail.Module.Login.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Captcha()
+        public Result Captcha()
         {
             var id = Guid.NewGuid().ToString();
             var info = _captcha.GenerateCaptcha(id);
-            var stream = new MemoryStream(info.ImageBytes);
-            HttpContext.Response.Headers.Add("Captcha-Id", id);
-            return File(stream, "image/png");
+            var base64Image = Convert.ToBase64String(info.ImageBytes);
+            return Result.Successed(new
+            {
+                id,
+                imgSrc = $"data:image/png;base64,{base64Image}"
+            });
         }
         [AllowAnonymous]
         [HttpPost]

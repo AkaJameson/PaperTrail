@@ -83,7 +83,7 @@ namespace PaperTrail.Api
                     policy.AllowAnyMethod()
                       .SetIsOriginAllowed(_ => true)
                       .AllowAnyHeader()
-                      .AllowCredentials().WithExposedHeaders("Captcha-Id");
+                      .AllowCredentials();
                 });
             });
             //添加IP限流
@@ -149,6 +149,7 @@ namespace PaperTrail.Api
                 app.UseHsts();  // 启用 HSTS 中间件
                 app.UseHttpsRedirection();  // 启用 HTTPS 重定向中间件
             }
+            app.UseRateLimiter();
             //用户信息解析器（必须在Routing之前）配合权限验证中间件进行使用
             app.UseInfoParser();
             app.UseCors("Allows");

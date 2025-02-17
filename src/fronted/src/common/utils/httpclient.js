@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 class HttpClient {
   constructor(baseURL, options = {}) {
     this.defaultOptions = {
-      returnNativeData: true,  // 是否返回原始response.data
+      returnNativeData: false,  // 是否返回原始response.data
       needAuth: false,          // 是否需要鉴权头
       isFormData: false,        // 是否是form-data格式
       showError: true,          // 是否显示错误提示
@@ -48,12 +48,10 @@ class HttpClient {
     // 响应拦截器
     this.instance.interceptors.response.use(
       response => {
-        const res = {
-          data: this.defaultOptions.returnNativeData
+        const res = 
+          this.defaultOptions.returnNativeData
             ? response
-            : response.data,
-          status: response.status,
-        };
+            : response.data;
         return res;
       },
       error => {
