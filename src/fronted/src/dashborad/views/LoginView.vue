@@ -43,7 +43,9 @@
 </template>
 <script lang="ts" setup>
 import { FormInstance } from 'element-plus'
-import { reactive, ref, inject, onMounted } from 'vue';
+import { reactive, ref } from 'vue';
+import{useRouter} from 'vue-router'
+import {SetToken} from '@/common/utils/userStore.js'
 import User from "@/dashborad/hooks/user";
 const { loginModel, captcha, resetCaptcha, Login } = User();
 var rules = reactive({
@@ -61,14 +63,15 @@ var rules = reactive({
     ],
 });
 const formRef = ref<FormInstance>();
-
+const router = useRouter();
 const handleLogin = () => {
-    Login(formRef, () => {
-        console.log("登录");
+    Login(formRef, (res) => {
+        router.push({
+            path:"dashborad"
+        });
+        SetToken(res.data);
     })
 }
-
-
 </script>
 
 <style>
