@@ -16,7 +16,7 @@ namespace Papartrail.Manager
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterForNavigation<LoginView>();
         }
     }
 }
