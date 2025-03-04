@@ -204,3 +204,6 @@ Thumbs.db
 /src/backend/PaperTrail.Api/bin/Release/net8.0/linux-x64/appsettings.json
 /src/backend/PaperTrail.Api/bin/Release/publish/appsettings.json
 /src/backend/PaperTrail.Api/bin/Release/net8.0/appsettings.json
+/src/frontend/Papartrail.Manager/.vs
+/src/frontend/Papartrail.Manager/Papartrail.Manager/bin/Debug/net6.0-windows
+/src/frontend/Papartrail.Manager/Papartrail.Manager/obj
