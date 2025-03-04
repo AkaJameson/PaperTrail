@@ -9,7 +9,7 @@ const router = createRouter({
     },
     {
       path:"/dashborad",
-      component:()=>import('@/dashborad/views/dashborad.vue')
+      component:()=>import('@/dashborad/views/Dashborad.vue')
     },
     {
       name:"error",
@@ -18,6 +18,7 @@ const router = createRouter({
       props:true
     }
   ],
+  
 })
 
 export default router
