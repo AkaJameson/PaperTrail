@@ -24,12 +24,8 @@ namespace Papartrail.Manager.Views
             InitializeComponent();
             SourceInitialized += MainWindow_SourceInitialized;
             this.RegionManager = regionManager;
-            Loaded += MainWindow_Loaded;
         }
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            RegionManager.RequestNavigate(regionName: RegionNames.ContentRegion, "LoginView");
-        }
+       
         private void MainWindow_SourceInitialized(object sender, EventArgs e)
         {
             IntPtr handle = new WindowInteropHelper(this).Handle;
@@ -45,6 +41,11 @@ namespace Papartrail.Manager.Views
             }
             return IntPtr.Zero;
         }
-       
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            RegionManager.RequestNavigate(regionName: RegionNames.ContentRegion, "LoginView");
+        }
+
     }
 }

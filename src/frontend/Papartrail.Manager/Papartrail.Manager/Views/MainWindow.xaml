@@ -5,15 +5,17 @@
     xmlns:consts="clr-namespace:Papartrail.Manager.Model.Consts"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:prism="http://prismlibrary.com/"
-    Width="1200"
-    Height="800"
+    Width="800"
+    Height="550"
+    AllowsTransparency="True"
+    Background="Transparent"
+    BorderThickness="0"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     WindowStyle="None">
-    <Border CornerRadius="10">
-        <Grid>
-            <ContentControl
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                prism:RegionManager.RegionName="{x:Static consts:RegionNames.ContentRegion}" />
-        </Grid>
-    </Border>
+
+    <Grid>
+        <ContentControl prism:RegionManager.RegionName="{x:Static consts:RegionNames.ContentRegion}" />
+    </Grid>
+
 </hc:Window>

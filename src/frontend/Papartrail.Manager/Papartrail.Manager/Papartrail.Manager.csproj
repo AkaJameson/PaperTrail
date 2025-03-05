@@ -5,7 +5,15 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Images\background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Prism.DryIoc" />
  <PackageReference Include="HandyControl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 </Project>
